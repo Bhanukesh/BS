@@ -10,12 +10,12 @@ export default function Step1() {
   const [error, setError] = useState('');        // Array destructuring
 
   const handleNext = () => {
-    // **Validation**: Check required fields before proceeding
+    // Validation: Check required fields before proceeding
     if (!data.name.trim() || !data.email.trim()) {
       setError('Both fields are required.');
       return;
     }
-    // **Navigation**: Programmatic routing to next step
+    // Navigation: Programmatic routing to next step
     router.push('/signup/step2');
   };
 
