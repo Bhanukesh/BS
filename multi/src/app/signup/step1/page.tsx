@@ -1,51 +1,46 @@
 'use client';
 
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useSignupForm } from '@/contexts/SignupContext';
-import { useState } from 'react';
+
 
 export default function Step1() {
-  const router = useRouter();
-  const { data, updateField } = useSignupForm(); // Object destructuring
-  const [error, setError] = useState('');        // Array destructuring
+    const router = useRouter();
 
-  const handleNext = () => {
-    // Validation: Check required fields before proceeding
-    if (!data.name.trim() || !data.email.trim()) {
-      setError('Both fields are required.');
-      return;
-    }
-    // Navigation: Programmatic routing to next step
-    router.push('/signup/step2');
-  };
+    const handleNext = () => {
+        router.push('/signup/step2')
+    };
 
   return (
-    <div className="max-w-md w-full space-y-6">
-      <h2 className="text-2xl font-semibold text-center">Step 1: Basic Info</h2>
+    <div className="min-h-screen bg-white text-black p-6 flex flex-col justify-between">
+      <h1 className="text-2xl font-semibold mb-6">Step 1</h1>
 
-      {[
-        { label: 'Name', type: 'text', field: 'name' },
-        { label: 'Email', type: 'email', field: 'email' },
-      ].map(({ label, type, field }) => ( // Array mapping: Dynamic form generation
-        <div key={field}> {/* React keys: Unique identifier for reconciliation */}
-          <label className="block mb-1 font-medium">{label}</label>
-          <input
-            type={type}
-            value={data[field]} // Controlled inputs State-driven values
-            onChange={(e) => updateField(field, e.target.value)} // Event handling: Update shared state
-            className="w-full border p-2 rounded"
-          />
+      <div className="flex flex-col gap-4">
+        <div>
+          <p className="mb-1">First Name</p>
+          <Input placeholder="Enter your first name" />
         </div>
-      ))}
 
-      {error && <p className="text-red-500 text-sm">{error}</p>} {/* Conditional rendering: Show error if exists */}
+        <div>
+          <p className="mb-1">Last Name</p>
+          <Input placeholder="Enter your last name" />
+        </div>
 
-      <button
-        onClick={handleNext} // Event handling: Trigger validation and navigation
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
-      >
-        Next
-      </button>
+        <div>
+          <p className="mb-1">Email</p>
+          <Input type="email" placeholder="Enter your email" />
+        </div>
+
+        <div>
+          <p className="mb-1">Password</p>
+          <Input type="password" placeholder="Enter your password" />
+        </div>
+      </div>
+      
+      <div className="flex justify-end mt-6">
+        <Button onClick={handleNext}>Next</Button>
+      </div>
     </div>
   );
 }
