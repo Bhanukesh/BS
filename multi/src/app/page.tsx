@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export default function SignupPage() {
   const router = useRouter();
 
-  const handleStartRegistration = () => {
-    router.push('/signup/step1');
+  const handleStartRegistration = () => {      
+    router.push('/signup/step1');    
   };
 
   return (
