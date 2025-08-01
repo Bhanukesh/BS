@@ -1,18 +1,30 @@
-'use client'; 
+'use client';
 
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useSignupForm } from '../app/context/SignupContext'
 
 export default function SignupPage() {
   const router = useRouter();
+  const { updateField } = useSignupForm(); 
 
-  const handleStartRegistration = () => {      
+  const handleStartRegistration = () => {
+    updateField('firstName', '');
+    updateField('lastName', '');
+    updateField('email', '');
+    updateField('password', '');
+    updateField('address1', '');
+    updateField('line2', '');
+    updateField('city', '');
+    updateField('state', '');
+    updateField('zipCode', '');
+
     router.push('/signup/step1');    
   };
 
   return (
-    <div className="max-w-md w-full mx-auto space-y-6 text-center flex flex-col items-center justify-center min-h-[60vh]">
+    <div className="max-w-md w-full mx-auto space-y-6 text-center flex flex-col items-center justify-center min-h-[60vh] bg-white text-black">
       <h1 className="text-3xl font-bold text-foreground">Welcome!</h1>
       
       <div className="space-y-4 w-full">
