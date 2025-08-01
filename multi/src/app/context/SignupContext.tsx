@@ -1,6 +1,7 @@
+// src/app/context/SignupContext.tsx
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface FormData {
   firstName: string;
@@ -26,9 +27,14 @@ const defaultData: FormData = {
   zip: '',
 };
 
-const SignupContext = createContext<any>(null);
+interface SignupContextType {
+  data: FormData;
+  updateField: (field: keyof FormData, value: string) => void;
+}
 
-export function SignupProvider({ children }: { children: React.ReactNode }) {
+const SignupContext = createContext<SignupContextType | null>(null);
+
+export function SignupProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<FormData>(defaultData);
 
   const updateField = (field: keyof FormData, value: string) => {
@@ -43,5 +49,9 @@ export function SignupProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useSignupForm() {
-  return useContext(SignupContext);
+  const context = useContext(SignupContext);
+  if (!context) {
+    throw new Error('useSignupForm must be used within a SignupProvider');
+  }
+  return context;
 }

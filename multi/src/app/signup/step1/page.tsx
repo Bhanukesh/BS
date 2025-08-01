@@ -2,15 +2,28 @@
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
-import { useSignupForm } from '@/app/context/SignupContext';  
+import { useSignupForm } from '@/app/context/SignupContext';
+import { useState } from 'react';
 
 export default function Step1() {
   const router = useRouter();
+  const { data, updateField } = useSignupForm();
+  const [error, setError] = useState('');
 
   const handleNext = () => {
-    router.push('/signup/step2');
+    if (
+      data.firstName.trim() &&
+      data.lastName.trim() &&
+      data.email.trim() &&
+      data.password.trim()
+    ) {
+      setError('');
+      router.push('/signup/step2');
+    } else {
+      setError('Please fill in all fields.');
+    }
   };
 
   return (
@@ -19,27 +32,34 @@ export default function Step1() {
         <CardHeader>
           <CardTitle className="text-xl">Step 1: Basic Information</CardTitle>
         </CardHeader>
-
         <CardContent className="space-y-4">
-          <div>
-            <p className="mb-1 text-sm">First Name</p>
-            <Input placeholder="Enter your first name" />
-          </div>
+          <Input
+            placeholder="First Name"
+            value={data.firstName}
+            onChange={(e) => updateField('firstName', e.target.value)}
+          />
 
-          <div>
-            <p className="mb-1 text-sm">Last Name</p>
-            <Input placeholder="Enter your last name" />
-          </div>
+          <Input
+            placeholder="Last Name"
+            value={data.lastName}
+            onChange={(e) => updateField('lastName', e.target.value)}
+          />
 
-          <div>
-            <p className="mb-1 text-sm">Email</p>
-            <Input type="email" placeholder="Enter your email" />
-          </div>
+          <Input
+            placeholder="Email"
+            type="email"
+            value={data.email}
+            onChange={(e) => updateField('email', e.target.value)}
+          />
 
-          <div>
-            <p className="mb-1 text-sm">Password</p>
-            <Input type="password" placeholder="Enter your password" />
-          </div>
+          <Input
+            placeholder="Password"
+            type="password"
+            value={data.password}
+            onChange={(e) => updateField('password', e.target.value)}
+          />
+
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </CardContent>
 
         <CardFooter className="flex justify-end">

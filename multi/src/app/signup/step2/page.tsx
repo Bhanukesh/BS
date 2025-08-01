@@ -1,20 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
-import { useSignupForm } from '@/app/context/SignupContext';  
+import { useSignupForm } from '@/app/context/SignupContext';
 
 export default function Step2() {
   const router = useRouter();
+  const { data, updateField } = useSignupForm();
+  const [error, setError] = useState('');
 
   const handleNext = () => {
-    router.push('/signup/step3');
-  };
-
-  const handleBack = () => {
-    router.push('/signup/step1');
+    if (
+      data.address1.trim() &&
+      data.address2.trim() &&
+      data.city.trim() &&
+      data.state.trim() &&
+      data.zip.trim()
+    ) {
+      setError('');
+      router.push('/signup/step3');
+    } else {
+      setError('Please fill in all fields.');
+    }
   };
 
   return (
@@ -23,41 +33,37 @@ export default function Step2() {
         <CardHeader>
           <CardTitle className="text-xl">Step 2: Additional Details</CardTitle>
         </CardHeader>
-
         <CardContent className="space-y-4">
-          <div>
-            <p className="mb-1 text-sm">Address Line 1</p>
-            <Input placeholder="Enter address line 1" />
-          </div>
-
-          <div>
-            <p className="mb-1 text-sm">Address Line 2</p>
-            <Input placeholder="Enter address line 2 (optional)" />
-          </div>
-
-          <div>
-            <p className="mb-1 text-sm">City</p>
-            <Input placeholder="Enter city" />
-          </div>
-
-          <div>
-            <p className="mb-1 text-sm">State</p>
-            <Input placeholder="Enter state" />
-          </div>
-
-          <div>
-            <p className="mb-1 text-sm">Zip Code</p>
-            <Input placeholder="Enter zip code" />
-          </div>
+          <Input
+            placeholder="Address Line 1"
+            value={data.address1}
+            onChange={(e) => updateField('address1', e.target.value)}
+          />
+          <Input
+            placeholder="Address Line 2"
+            value={data.address2}
+            onChange={(e) => updateField('address2', e.target.value)}
+          />
+          <Input
+            placeholder="City"
+            value={data.city}
+            onChange={(e) => updateField('city', e.target.value)}
+          />
+          <Input
+            placeholder="State"
+            value={data.state}
+            onChange={(e) => updateField('state', e.target.value)}
+          />
+          <Input
+            placeholder="Zip Code"
+            value={data.zip}
+            onChange={(e) => updateField('zip', e.target.value)}
+          />
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </CardContent>
-
         <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={handleBack}>
-            Back
-          </Button>
-          <Button onClick={handleNext}>
-            Next
-          </Button>
+          <Button variant="outline" onClick={() => router.push('/signup/step1')}>Back</Button>
+          <Button onClick={handleNext}>Next</Button>
         </CardFooter>
       </Card>
     </div>
