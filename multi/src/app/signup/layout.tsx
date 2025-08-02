@@ -1,19 +1,15 @@
-import '@/app/globals.css';
+'use client';
 
 import { SignupProvider } from '@/app/context/SignupContext';
 
-export default function RootLayout({
+export default function SignupLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <SignupProvider>
-          {children}
-        </SignupProvider>
-      </body>
-    </html>
+    <SignupProvider>
+      {children}
+    </SignupProvider>
   );
 }
