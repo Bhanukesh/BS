@@ -1,59 +1,46 @@
-// src/app/context/SignupContext.tsx
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Define the type (no change)
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  zip: string;
-}
+export default function SignupPage() {
+  const router = useRouter();
 
-// Reuse field names only once, cast the object as FormData
-const defaultData = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  address1: '',
-  address2: '',
-  city: '',
-  state: '',
-  zip: '',
-} as FormData;
-
-interface SignupContextType {
-  data: FormData;
-  updateField: (field: keyof FormData, value: string) => void;
-}
-
-const SignupContext = createContext<SignupContextType | null>(null);
-
-export function SignupProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<FormData>(defaultData);
-
-  const updateField = (field: keyof FormData, value: string) => {
-    setData(prev => ({ ...prev, [field]: value }));
+  const handleStartRegistration = () => {
+    router.push('/signup/step1');
   };
 
   return (
-    <SignupContext.Provider value={{ data, updateField }}>
-      {children}
-    </SignupContext.Provider>
-  );
-}
+    <div className="max-w-md w-full mx-auto space-y-6 text-center flex flex-col items-center justify-center min-h-[60vh] bg-white text-black">
+      <h1 className="text-3xl font-bold text-foreground">Welcome!</h1>
+      
+      <div className="space-y-4 w-full">
+        <p className="text-lg text-muted-foreground">
+          Please register - it's a simple 3-step process
+        </p>
+        
+        <Card className="w-full">
+          <CardHeader className="pb-1">
+            <CardTitle className="text-base">What to expect:</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p>Step 1: Basic Information</p>
+              <p>Step 2: Additional Details</p>
+              <p>Step 3: Review & Submit</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-export function useSignupForm() {
-  const context = useContext(SignupContext);
-  if (!context) {
-    throw new Error('useSignupForm must be used within a SignupProvider');
-  }
-  return context;
+      <Button 
+        onClick={handleStartRegistration}
+        className="w-full"
+        size="lg"
+      >
+        Start Registration
+      </Button>
+    </div>
+  );
 }
